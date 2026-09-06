@@ -5,7 +5,7 @@ function simplejack_scripts()
   // The standard stylesheet.
   wp_enqueue_style('simplejack-style', get_template_directory_uri() . '/style.css');
 
-  // The CSS resets
+  // The CSS resets.
   wp_enqueue_style('simplejack-resets', get_template_directory_uri() . '/assets/css/resets.css');
 }
 add_action('wp_enqueue_scripts', 'simplejack_scripts');
@@ -13,7 +13,106 @@ add_action('wp_enqueue_scripts', 'simplejack_scripts');
 
 function remove_wp_block_menu()
 {
+  // Remove WP Block Editor menu items, specifically the pattern and font library menus.
   remove_submenu_page('themes.php', 'site-editor.php?p=/pattern');
   remove_submenu_page('themes.php', 'font-library.php');
 }
 add_action('admin_init', 'remove_wp_block_menu');
+
+if (! function_exists('simplejack_setup')) {
+
+  /**
+   * Sets up theme defaults and registers support for various WordPress features.
+   */
+
+  function simplejack_setup()
+  {
+    /*
+		 * Let WordPress manage the document title.
+		 * This theme does not use a hard-coded <title> tag in the document head,
+		 * WordPress will provide it for us.
+		 */
+    add_theme_support('title-tag');
+
+    // Add post-formats support.
+    add_theme_support(
+      'post-formats',
+      array(
+        'link',
+        'aside',
+        'gallery',
+        'image',
+        'quote',
+        'status',
+        'video',
+        'audio',
+        'chat',
+      )
+    );
+
+    // Add support for post thumbnails on posts and pages.
+    add_theme_support('post-thumbnails');
+    set_post_thumbnail_size(1920, 9999);
+
+    // Register the default menu locations.
+    register_nav_menus(
+      array(
+        'primary' => esc_html__('Primary menu', 'simplejack'),
+        'footer'  => esc_html__('Secondary menu', 'simplejack'),
+      )
+    );
+
+    /*
+		 * Switch default core markup for search form, comment form, and comments
+		 * to output valid HTML5.
+		 */
+    add_theme_support(
+      'html5',
+      array(
+        'comment-form',
+        'comment-list',
+        'gallery',
+        'caption',
+        'style',
+        'script',
+        'navigation-widgets',
+      )
+    );
+
+    /*
+		 * Add support for core custom logo.
+		 * @link https://codex.wordpress.org/Theme_Logo
+		 */
+    $logo_width  = 200;
+    $logo_height = 150;
+
+    add_theme_support(
+      'custom-logo',
+      array(
+        'height'               => $logo_height,
+        'width'                => $logo_width,
+        'flex-width'           => true,
+        'flex-height'          => true,
+        'unlink-homepage-logo' => true,
+      )
+    );
+
+    // Add theme support for selective refresh for widgets.
+    add_theme_support('customize-selective-refresh-widgets');
+
+    // Custom background color.
+    add_theme_support(
+      'custom-background',
+      array(
+        'default-color' => 'ffffff',
+      )
+    );
+
+    // Add support for responsive embedded content.
+    add_theme_support('responsive-embeds');
+
+    // Remove feed icon link from legacy RSS widget.
+    add_filter('rss_widget_feed_link', '__return_empty_string');
+  }
+}
+add_action('after_setup_theme', 'simplejack_setup');
