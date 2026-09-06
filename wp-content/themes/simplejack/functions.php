@@ -100,14 +100,6 @@ if (! function_exists('simplejack_setup')) {
     // Add theme support for selective refresh for widgets.
     add_theme_support('customize-selective-refresh-widgets');
 
-    // Custom background color.
-    add_theme_support(
-      'custom-background',
-      array(
-        'default-color' => 'ffffff',
-      )
-    );
-
     // Add support for responsive embedded content.
     add_theme_support('responsive-embeds');
 
