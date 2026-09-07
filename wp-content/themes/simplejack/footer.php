@@ -13,13 +13,11 @@
 
     <p class="copyright">
       &copy; <?php echo esc_html(date('Y')); ?>
-      <?php bloginfo('name'); ?>. Built with WordPress.
+      <?php bloginfo('name'); ?>.
     </p>
 
     <div class="social-links">
-      <p><a class="transition-colors" href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a></p>
-      <p><a class="transition-colors" href="https://twitter.com" target="_blank" rel="noopener noreferrer">Twitter</a></p>
-      <p><a class="transition-colors" href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></p>
+      <p><a class="transition-colors" href="https://linkedin.com/in/victor-davalos-263897178" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
     </div>
 
   </div>

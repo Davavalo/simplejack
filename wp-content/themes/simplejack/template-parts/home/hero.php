@@ -19,7 +19,7 @@ $current_role        = 'Art Director';
       <?php echo esc_html($current_role); ?> creating cohesive and impactful campaigns.
     </h2>
     <p class="hero__description">
-      I bring ideas to life for businesses, agencies and nonprofits ensuring every piece feels intentional from start to finish. </p>
+      I bring ideas to life for businesses, agencies, and nonprofits ensuring every piece feels intentional from start to finish. </p>
     <div class="hero__cta">
       <a href="#work" class="button button--primary">View the Work</a>
       <a href="#contact" class="button button--secondary"">Get in Touch</a>

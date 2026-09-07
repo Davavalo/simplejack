@@ -3,6 +3,25 @@ Component Styling
 */
 
 /* Site Header */
+
+.site-branding {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.site-logo {
+  flex: 0 0 auto;
+  width: 1.5rem;
+}
+
+.site-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -19,8 +38,10 @@ Component Styling
 }
 
 .site-title {
+  margin: 0;
   font-size: var(--text-lg);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .site-title a {
