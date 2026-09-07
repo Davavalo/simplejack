@@ -3,10 +3,15 @@
 function simplejack_scripts()
 {
   // The standard stylesheet.
-  wp_enqueue_style('simplejack-style', get_template_directory_uri() . '/style.css');
+  wp_enqueue_style('simplejack-style', get_stylesheet_uri());
 
   // The CSS resets.
-  wp_enqueue_style('simplejack-resets', get_template_directory_uri() . '/assets/css/resets.css');
+  wp_enqueue_style('simplejack-resets', get_theme_file_uri('/assets/css/resets.css'));
+
+  // The CSS styles.
+  wp_enqueue_style('simplejack-components', get_theme_file_uri('/assets/css/components.css'));
+  wp_enqueue_style('simplejack-globals', get_theme_file_uri('/assets/css/globals.css'));
+  wp_enqueue_style('simplejack-pages', get_theme_file_uri('/assets/css/pages.css'));
 }
 add_action('wp_enqueue_scripts', 'simplejack_scripts');
 

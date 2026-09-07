@@ -6,7 +6,7 @@
  */
 
 $site_title    = get_bloginfo('name');
-$description  = get_bloginfo('description', 'display');
+$description   = get_bloginfo('description', 'display');
 ?>
 
 

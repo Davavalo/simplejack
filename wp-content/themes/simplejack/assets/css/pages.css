@@ -1,0 +1,79 @@
+/*
+Page and Page Partials Styling
+*/
+
+/* Hero Section Styling */
+
+.signal-dot {
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  margin-right: 0.375rem;
+  background-color: var(--signal);
+  border-radius: 50%;
+  vertical-align: 0.1em;
+}
+
+.hero__subtitle {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  margin-bottom: 1.25rem;
+}
+
+.hero__title {
+  font-size: var(--text-5xl);
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.hero__description {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  color: var(--ink-soft);
+  margin-top: 1.25rem;
+  max-width: 32rem;
+}
+
+.hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+  padding: 0.625rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-decoration: none;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.button--primary {
+  background-color: var(--ink);
+  color: var(--paper);
+}
+
+.button--primary:hover {
+  background-color: var(--signal);
+  color: var(--paper);
+}
+
+.button--secondary {
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.button--secondary:hover {
+  border-color: var(--signal);
+  color: var(--signal);
+}

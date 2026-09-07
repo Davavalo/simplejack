@@ -1,0 +1,75 @@
+/*
+Component Styling
+*/
+
+/* Site Header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 1.5rem;
+  gap: 1rem;
+}
+
+.site-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.site-title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.main-navigation .menu-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.main-navigation .menu-wrapper > li > a {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.main-navigation .menu-wrapper > li > a:hover {
+  color: var(--ink);
+}
+
+.main-navigation .menu-wrapper > li.current-menu-item > a {
+  color: var(--signal);
+}
+
+.main-navigation .menu-wrapper > li.current-menu-item > a:hover {
+  color: var(--signal);
+}
+
+/* Site Footer */
+.site-footer {
+  font-size: var(--text-sm);
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.site-footer .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 2rem;
+  gap: 1rem;
+}
+
+.site-footer .social-links {
+  display: flex;
+  gap: 0.5rem;
+}
