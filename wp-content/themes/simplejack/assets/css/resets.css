@@ -5,12 +5,15 @@
   box-sizing: border-box;
 }
 
-/* 2. Remove default margin */
+/* 2. Remove default margins */
+html,
 body,
 h1,
 h2,
 h3,
 h4,
+h5,
+h6,
 p,
 figure,
 blockquote,
@@ -19,10 +22,22 @@ dd {
   margin: 0;
 }
 
-/* 3. Set core body defaults */
+/* 3. Establish the page layout */
+html {
+  min-height: 100%;
+}
+
 body {
-  min-height: 100vh;
-  line-height: 1.5;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+}
+
+/* Main fills available viewport space */
+main {
+  flex: 1;
+  min-height: 0;
 }
 
 /* 4. Make media elements easier to work with */
@@ -41,4 +56,40 @@ button,
 textarea,
 select {
   font: inherit;
+  color: inherit;
+}
+
+/* 6. Remove default list styles */
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 7. Make links inherit color */
+a {
+  color: inherit;
+}
+
+/* 8. Prevent text from overflowing */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve text rendering on mobile */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* 10. Show a pointer for buttons */
+button {
+  cursor: pointer;
 }

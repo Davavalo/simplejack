@@ -1,6 +1,33 @@
 /*
 Theme Name: Simple Jack
 */
+@font-face {
+  font-family: "Poppins";
+  src: url("/assets/fonts/Poppins-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/assets/fonts/Poppins-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/assets/fonts/Poppins-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/assets/fonts/Poppins-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
 
 :root {
   --paper: #f7f6f3; /* page background */
@@ -9,29 +36,37 @@ Theme Name: Simple Jack
   --signal: #3d3dff; /* the one accent color */
   --line: #e4e2dc; /* borders, rules */
   --surface: #efeeea; /* cards, raised panels */
+  --font-primary: "Poppins", sans-serif;
 }
 
 body {
-  background: var(--paper);
+  font-family: var(--font-primary);
 }
 
-header {
+section {
+  padding-block: 5rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 48rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.site-header {
   position: sticky;
   top: 0;
   z-index: 40;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 90%, transparent);
-  backdrop-filter: blur(8px);
 }
 
-header > div {
+.site-header .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-block: 1.5rem;
   gap: 1rem;
-  max-width: 48rem;
-  margin-inline: auto;
-  padding: 1rem 1.5rem;
 }
 
 .site-title a {
@@ -48,18 +83,29 @@ header > div {
   list-style: none;
 }
 
-.main-navigation a {
+.main-navigation .menu-wrapper > li > a {
   color: var(--ink-soft);
   transition: color 150ms;
   text-decoration: none;
 }
 
-.main-navigation a:hover {
+.main-navigation .menu-wrapper > li.current-menu-item > a {
+  color: var(--signal);
+}
+
+.main-navigation .menu-wrapper > li > a:hover {
   color: var(--ink);
 }
 
-section {
-  max-width: 48rem;
-  margin-inline: auto;
-  padding: 4rem 1.5rem 5rem;
+.site-footer {
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.site-footer .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 2rem;
+  gap: 1rem;
 }

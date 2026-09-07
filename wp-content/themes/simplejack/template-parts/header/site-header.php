@@ -7,7 +7,7 @@
 ?>
 
 <header id="masthead" class="site-header">
-  <div>
+  <div class="container">
     <?php get_template_part('template-parts/header/site-branding'); ?>
     <?php get_template_part('template-parts/header/site-nav'); ?>
   </div>
