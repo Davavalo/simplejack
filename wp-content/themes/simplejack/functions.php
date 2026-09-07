@@ -108,3 +108,22 @@ if (! function_exists('simplejack_setup')) {
   }
 }
 add_action('after_setup_theme', 'simplejack_setup');
+
+
+/**
+ * Add a custom class to menu links.
+ *
+ * Use the `link_class` argument with wp_nav_menu().
+ */
+function add_menu_link_class($atts, $_item, $args)
+{
+  if (! empty($args->link_class)) {
+    $atts['class'] = trim(
+      ($atts['class'] ?? '') . ' ' . $args->link_class
+    );
+  }
+
+  return $atts;
+}
+
+add_filter('nav_menu_link_attributes', 'add_menu_link_class', 10, 3);

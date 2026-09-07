@@ -24,6 +24,13 @@ Theme Name: Simple Jack
 
 @font-face {
   font-family: "Poppins";
+  src: url("/assets/fonts/Poppins-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Poppins";
   src: url("/assets/fonts/Poppins-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
@@ -37,6 +44,28 @@ Theme Name: Simple Jack
   --line: #e4e2dc; /* borders, rules */
   --surface: #efeeea; /* cards, raised panels */
   --font-primary: "Poppins", sans-serif;
+  --spacing: 0.25rem;
+  --container-md: 28rem;
+  --container-lg: 32rem;
+  --container-xl: 36rem;
+  --container-2xl: 42rem;
+  --container-3xl: 48rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: calc(1 / 0.75);
+  --text-sm: 0.875rem;
+  --text-sm--line-height: calc(1.25 / 0.875);
+  --text-lg: 1.125rem;
+  --text-lg--line-height: calc(1.75 / 1.125);
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: calc(2 / 1.5);
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: calc(2.25 / 1.875);
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: calc(2.5 / 2.25);
+  --text-5xl: 3rem;
+  --text-5xl--line-height: 1;
+  --transition-duration: 150ms;
+  --transition-ease: ease;
 }
 
 body {
@@ -45,6 +74,26 @@ body {
 
 section {
   padding-block: 5rem;
+}
+
+a {
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--ink);
+}
+
+.transition-colors {
+  transition:
+    color var(--transition-duration) var(--transition-ease),
+    background-color var(--transition-duration) var(--transition-ease),
+    border-color var(--transition-duration) var(--transition-ease),
+    outline-color var(--transition-duration) var(--transition-ease),
+    text-decoration-color var(--transition-duration) var(--transition-ease),
+    fill var(--transition-duration) var(--transition-ease),
+    stroke var(--transition-duration) var(--transition-ease);
 }
 
 .container {
@@ -69,6 +118,11 @@ section {
   gap: 1rem;
 }
 
+.site-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
 .site-title a {
   color: var(--ink);
   text-decoration: none;
@@ -84,20 +138,24 @@ section {
 }
 
 .main-navigation .menu-wrapper > li > a {
+  font-size: var(--text-sm);
   color: var(--ink-soft);
-  transition: color 150ms;
-  text-decoration: none;
-}
-
-.main-navigation .menu-wrapper > li.current-menu-item > a {
-  color: var(--signal);
 }
 
 .main-navigation .menu-wrapper > li > a:hover {
   color: var(--ink);
 }
 
+.main-navigation .menu-wrapper > li.current-menu-item > a {
+  color: var(--signal);
+}
+
+.main-navigation .menu-wrapper > li.current-menu-item > a:hover {
+  color: var(--signal);
+}
+
 .site-footer {
+  font-size: var(--text-sm);
   border-top: 1px solid var(--line);
   color: var(--ink-soft);
 }
@@ -108,4 +166,9 @@ section {
   justify-content: space-between;
   padding-block: 2rem;
   gap: 1rem;
+}
+
+.site-footer .social-links {
+  display: flex;
+  gap: 0.5rem;
 }
