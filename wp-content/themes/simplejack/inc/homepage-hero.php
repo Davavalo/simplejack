@@ -1,25 +1,52 @@
 <?php
 
 /**
- * Hide the main WYSIWYG content editor on the front page.
+ * Homepage Hero Meta Box and functionality.
  */
 
+
+/**
+ * Remove the WYSIWYG editor from the front page.
+ */
 function remove_homepage_editor()
 {
-  $screen = get_current_screen();
-  if (!$screen || $screen->base !== 'post') {
+  $front_page_id = (int) get_option('page_on_front');
+  $post_id       = isset($_GET['post']) ? (int) $_GET['post'] : 0;
+
+  if (!$front_page_id || !$post_id) {
     return;
   }
 
-  $post_id       = get_the_ID();
-  $front_page_id = (int) get_option('page_on_front');
-
-  if ($post_id && $post_id === $front_page_id) {
-    remove_post_type_support('page', 'editor');
-    remove_meta_box('postcustom', 'page', 'normal');
+  if ($post_id !== $front_page_id) {
+    return;
   }
+
+  remove_post_type_support('page', 'editor');
 }
-add_action('admin_head', 'remove_homepage_editor');
+
+add_action('admin_init', 'remove_homepage_editor');
+
+
+/**
+ * Remove the native Custom Fields meta box from the front page.
+ */
+function remove_homepage_custom_fields()
+{
+  $front_page_id = (int) get_option('page_on_front');
+  $post_id       = isset($_GET['post']) ? (int) $_GET['post'] : 0;
+
+  if (!$front_page_id || !$post_id) {
+    return;
+  }
+
+  if ($post_id !== $front_page_id) {
+    return;
+  }
+
+  remove_meta_box('postcustom', 'page', 'normal');
+}
+
+add_action('add_meta_boxes', 'remove_homepage_custom_fields', 100);
 
 
 /**
@@ -30,6 +57,7 @@ add_action('admin_head', 'remove_homepage_editor');
 function prepopulate_front_page_fields()
 {
   $front_page_id = (int) get_option('page_on_front');
+
   if (!$front_page_id) {
     return;
   }
@@ -51,110 +79,166 @@ add_action('admin_init', 'prepopulate_front_page_fields');
 
 
 /**
- * 1. Add Custom Meta Box to Homepage
+ * Add Hero Settings meta box to the front page.
  */
-add_action('add_meta_boxes', function () {
+function add_homepage_hero_meta_box()
+{
+  // Check if we are on the front page
   $front_page_id = (int) get_option('page_on_front');
-  $current_screen_post = isset($_GET['post']) ? (int) $_GET['post'] : 0;
 
-  // Only display on the designated Front Page
-  if ($front_page_id && $current_screen_post === $front_page_id) {
-    add_meta_box(
-      'hero_settings_meta_box',         // Unique Box ID
-      'Hero Section Details',           // Box Title
-      'render_hero_settings_meta_box',  // Callback function
-      'page',                           // Post type
-      'normal',                         // Context (main column)
-      'high'                            // Priority
-    );
+  // Check if we are editing the front page
+  $current_post_id = isset($_GET['post']) ? (int) $_GET['post'] : 0;
+
+  // If we are not on the front page or not editing the front page, return
+  if (!$front_page_id || $current_post_id !== $front_page_id) {
+    return;
   }
-});
+
+  add_meta_box(
+    'hero_settings_meta_box',
+    'Hero Section Details',
+    'render_hero_settings_meta_box',
+    'page',
+    'normal',
+    'high'
+  );
+}
+add_action('add_meta_boxes', 'add_homepage_hero_meta_box');
+
 
 /**
- * 2. Render the Styled Meta Box HTML
+ * Render the Hero Settings meta box.
  */
 function render_hero_settings_meta_box($post)
 {
-  // Add nonce for security
-  wp_nonce_field('save_hero_settings', 'hero_settings_nonce');
+  wp_nonce_field(
+    'save_hero_settings',
+    'hero_settings_nonce'
+  );
 
-  // Retrieve current values
-  $role     = get_post_meta($post->ID, 'current_role', true) ?: 'My Current Role';
-  $job      = get_post_meta($post->ID, 'current_job', true) ?: 'My Current Job';
-  $location = get_post_meta($post->ID, 'current_location', true) ?: 'My Current Location';
+  $role = get_post_meta($post->ID, 'current_role', true);
+  $job = get_post_meta($post->ID, 'current_job', true);
+  $location = get_post_meta($post->ID, 'current_location', true);
 ?>
-  <style>
-    .hero-meta-field {
-      margin-bottom: 15px;
-    }
-
-    .hero-meta-field:last-child {
-      margin-bottom: 0;
-    }
-
-    .hero-meta-field label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 5px;
-    }
-
-    .hero-meta-field input[type="text"] {
-      width: 100%;
-      max-width: 500px;
-      padding: 6px 10px;
-    }
-
-    .hero-meta-field .description {
-      color: #666;
-      font-size: 12px;
-      margin-top: 3px;
-    }
-  </style>
 
   <div class="hero-meta-field">
-    <label for="current_role">Current Role</label>
-    <input type="text" id="current_role" name="current_role" value="<?php echo esc_attr($role); ?>">
-    <p class="description">e.g., Art Director, Lead Designer</p>
+    <label for="current_role">
+      <strong>Current Role</strong>
+    </label>
+
+    <input
+      type="text"
+      id="current_role"
+      name="current_role"
+      value="<?php echo esc_attr($role); ?>"
+      class="widefat">
+
+    <p class="description">
+      e.g., Art Director, Lead Designer
+    </p>
   </div>
 
   <div class="hero-meta-field">
-    <label for="current_job">Current Company</label>
-    <input type="text" id="current_job" name="current_job" value="<?php echo esc_attr($job); ?>">
-    <p class="description">e.g., Google</p>
+    <label for="current_job">
+      <strong>Current Company</strong>
+    </label>
+
+    <input
+      type="text"
+      id="current_job"
+      name="current_job"
+      value="<?php echo esc_attr($job); ?>"
+      class="widefat">
+
+    <p class="description">
+      e.g., Google
+    </p>
   </div>
 
   <div class="hero-meta-field">
-    <label for="current_location">Current Location</label>
-    <input type="text" id="current_location" name="current_location" value="<?php echo esc_attr($location); ?>">
-    <p class="description">e.g., Kansas City, MO</p>
+    <label for="current_location">
+      <strong>Current Location</strong>
+    </label>
+
+    <input
+      type="text"
+      id="current_location"
+      name="current_location"
+      value="<?php echo esc_attr($location); ?>"
+      class="widefat">
+
+    <p class="description">
+      e.g., Kansas City, MO
+    </p>
   </div>
+
 <?php
 }
 
+
 /**
- * 3. Save the Field Data
+ * Save Hero Settings meta box data.
  */
-add_action('save_post', function ($post_id) {
-  // Check security nonce
-  if (!isset($_POST['hero_settings_nonce']) || !wp_verify_nonce($_POST['hero_settings_nonce'], 'save_hero_settings')) {
+function save_homepage_hero_meta($post_id)
+{
+  // Check if the nonce is set and valid
+  if (
+    !isset($_POST['hero_settings_nonce']) ||
+    !wp_verify_nonce(
+      wp_unslash($_POST['hero_settings_nonce']),
+      'save_hero_settings'
+    )
+  ) {
     return;
   }
 
-  // Stop autosave
-  if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+  // Disallow autosave
+  if (
+    defined('DOING_AUTOSAVE') &&
+    DOING_AUTOSAVE
+  ) {
     return;
   }
 
-  // Check user permissions
+  // Check if this is a revision or autosave
+  if (
+    wp_is_post_revision($post_id) ||
+    wp_is_post_autosave($post_id)
+  ) {
+    return;
+  }
+
+  // Check if the post type is 'page'
+  if (get_post_type($post_id) !== 'page') {
+    return;
+  }
+
+  // Check if this is the front page
+  if ((int) get_option('page_on_front') !== (int) $post_id) {
+    return;
+  }
+
+  // Check if the user can edit the page
   if (!current_user_can('edit_page', $post_id)) {
     return;
   }
 
-  // Save or update meta values
-  $fields = ['current_role', 'current_job', 'current_location'];
+  $fields = [
+    'current_role',
+    'current_job',
+    'current_location',
+  ];
+
   foreach ($fields as $field) {
     if (isset($_POST[$field])) {
-      update_post_meta($post_id, $field, sanitize_text_field($_POST[$field]));
+      update_post_meta(
+        $post_id,
+        $field,
+        sanitize_text_field(
+          wp_unslash($_POST[$field])
+        )
+      );
     }
   }
-});
+}
+add_action('save_post', 'save_homepage_hero_meta');

@@ -128,4 +128,8 @@ add_filter('nav_menu_link_attributes', 'add_menu_link_class', 10, 3);
 
 
 // Homepage Hero Meta Box and functionality
-require get_template_directory() . '/inc/homepage-hero.php';
+require_once get_template_directory() . '/inc/homepage-hero.php';
+
+
+// Project Post Type
+require_once get_template_directory() . '/inc/project-post-type.php';
