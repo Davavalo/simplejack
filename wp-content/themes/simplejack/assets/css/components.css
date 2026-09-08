@@ -52,7 +52,7 @@ Component Styling
 .main-navigation .menu-wrapper {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -78,19 +78,33 @@ Component Styling
 /* Site Footer */
 .site-footer {
   font-size: var(--text-sm);
-  border-top: 1px solid var(--line);
   color: var(--ink-soft);
+  border-top: 1px solid var(--line);
 }
 
 .site-footer .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: 2rem;
   gap: 1rem;
+  padding-block: 2rem;
 }
 
-.site-footer .social-links {
+.social-links {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.social-link {
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color var(--transition-duration) var(--transition-ease);
+}
+
+.social-link:hover {
+  color: var(--ink);
 }

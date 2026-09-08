@@ -16,9 +16,25 @@
       <?php bloginfo('name'); ?>.
     </p>
 
-    <div class="social-links">
-      <p><a class="transition-colors" href="https://linkedin.com/in/victor-davalos-263897178" target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
-    </div>
+
+    <?php if (has_nav_menu('footer')) : ?>
+
+      <nav class="social-navigation" aria-label="<?php esc_attr_e('Social links', 'simple-jack'); ?>">
+        <?php
+        wp_nav_menu(
+          array(
+            'theme_location' => 'footer',
+            'menu_class'     => 'social-links',
+            'container'      => false,
+            'items_wrap'     => '<ul class="%2$s">%3$s</ul>',
+            'fallback_cb'    => false,
+            'link_class'     => 'social-link',
+          )
+        );
+        ?>
+      </nav>
+
+    <?php endif; ?>
 
   </div>
 </footer>

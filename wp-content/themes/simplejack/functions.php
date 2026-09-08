@@ -63,7 +63,7 @@ if (! function_exists('simplejack_setup')) {
     register_nav_menus(
       array(
         'primary' => esc_html__('Primary menu', 'simplejack'),
-        'footer'  => esc_html__('Secondary menu', 'simplejack'),
+        'footer'  => esc_html__('Footer menu', 'simplejack'),
       )
     );
 
@@ -124,5 +124,8 @@ function add_menu_link_class($atts, $_item, $args)
 
   return $atts;
 }
-
 add_filter('nav_menu_link_attributes', 'add_menu_link_class', 10, 3);
+
+
+// Homepage Hero Meta Box and functionality
+require get_template_directory() . '/inc/homepage-hero.php';
