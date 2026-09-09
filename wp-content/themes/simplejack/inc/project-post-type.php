@@ -7,84 +7,212 @@ function register_project_cpt()
 {
 
   $labels = array(
-    'name'                     => __('Projects', 'simplejack'),
-    'singular_name'            => __('Project', 'simplejack'),
-    'add_new'                  => __('Add New', 'simplejack'),
-    'add_new_item'             => __('Add New Project', 'simplejack'),
-    'edit_item'                => __('Edit Project', 'simplejack'),
-    'new_item'                 => __('New Project', 'simplejack'),
-    'view_item'                => __('View Project', 'simplejack'),
-    'view_items'               => __('View Projects', 'simplejack'),
-    'search_items'             => __('Search Projects', 'simplejack'),
-    'not_found'                => __('No Projects found.', 'simplejack'),
-    'not_found_in_trash'       => __('No Projects found in Trash.', 'simplejack'),
-    'all_items'                => __('All Projects', 'simplejack'),
-    'archives'                 => __('Project Archives', 'simplejack'),
-    'attributes'               => __('Project Attributes', 'simplejack'),
-    'insert_into_item'         => __('Insert into Project', 'simplejack'),
-    'uploaded_to_this_item'    => __('Uploaded to this Project', 'simplejack'),
-    'featured_image'           => __('Featured Image', 'simplejack'),
-    'set_featured_image'       => __('Set featured image', 'simplejack'),
-    'remove_featured_image'    => __('Remove featured image', 'simplejack'),
-    'use_featured_image'       => __('Use as featured image', 'simplejack'),
-    'menu_name'                => __('Projects', 'simplejack'),
-    'filter_items_list'        => __('Filter Project list', 'simplejack'),
-    'filter_by_date'           => __('Filter by date', 'simplejack'),
-    'items_list_navigation'    => __('Projects list navigation', 'simplejack'),
-    'items_list'               => __('Projects list', 'simplejack'),
-    'item_published'           => __('Project published.', 'simplejack'),
-    'item_published_privately' => __('Project published privately.', 'simplejack'),
-    'item_reverted_to_draft'   => __('Project reverted to draft.', 'simplejack'),
-    'item_scheduled'            => __('Project scheduled.', 'simplejack'),
-    'item_updated'              => __('Project updated.', 'simplejack'),
-    'item_link'                => __('Project Link', 'simplejack'),
-    'item_link_description'    => __('A link to a project.', 'simplejack'),
+    'name'          => __('Projects', 'simplejack'),
+    'singular_name' => __('Project', 'simplejack'),
+    'add_new'       => __('Add New', 'simplejack'),
+    'add_new_item'  => __('Add New Project', 'simplejack'),
+    'edit_item'     => __('Edit Project', 'simplejack'),
+    'new_item'      => __('New Project', 'simplejack'),
+    'view_item'     => __('View Project', 'simplejack'),
+    'view_items'    => __('View Projects', 'simplejack'),
+    'search_items'  => __('Search Projects', 'simplejack'),
+    'not_found'     => __('No Projects found.', 'simplejack'),
+    'all_items'     => __('All Projects', 'simplejack'),
+    'menu_name'     => __('Projects', 'simplejack'),
   );
 
   $args = array(
-    'labels'             => $labels,
-    'description'        => __('Organize and manage projects.', 'simplejack'),
 
-    // Visibility
+    'labels' => $labels,
+
+    'description' => __('Organize and manage projects.', 'simplejack'),
+
     'public'             => true,
     'exclude_from_search' => false,
-    'publicly_queryable' => false,
+    'publicly_queryable' => true,
 
-    // Admin
     'show_ui'            => true,
     'show_in_menu'       => true,
     'show_in_nav_menus'  => false,
-    'show_in_admin_bar'  => false,
+    'show_in_admin_bar'  => true,
     'show_in_rest'       => true,
 
-    // Menu
-    'menu_icon'          => 'dashicons-portfolio',
+    'menu_icon' => 'dashicons-portfolio',
 
-    // Capabilities
-    'capability_type'    => 'post',
+    'capability_type' => 'post',
 
-    // Editor features
-    'supports'           => array(
+    'supports' => array(
       'title',
-      'editor',
       'thumbnail',
       'revisions',
+      'editor',
       'custom-fields',
     ),
 
-    // URLs
-    'has_archive'        => false,
-    'rewrite'            => array(
-      'slug' => 'work',
-    ),
-    'query_var'          => true,
+    'has_archive' => true,
 
-    // Other
-    'can_export'         => true,
-    'delete_with_user'   => false,
+    'rewrite' => array(
+      'slug'       => 'work',
+      'with_front' => false,
+    ),
+
+    'can_export'      => true,
+    'delete_with_user' => false,
+
+    'taxonomies' => array('post_tag'),
   );
 
   register_post_type('project', $args);
 }
-
 add_action('init', 'register_project_cpt');
+
+register_post_meta(
+  'project',
+  'completion_year',
+  array(
+    'type'         => 'integer',
+    'description'  => 'The year the project was completed.',
+    'single'       => true,
+    'show_in_rest' => true,
+  )
+);
+
+register_post_meta(
+  'project',
+  'project_summary',
+  array(
+    'type'         => 'string',
+    'description'  => 'A brief summary of the project.',
+    'single'       => true,
+    'show_in_rest' => true,
+  )
+);
+
+
+/**
+ * Add Project Details meta box to the project post type.
+ */
+function add_project_cpt_meta_box()
+{
+
+  add_meta_box(
+    'project_cpt_meta_box',
+    'Project Details',
+    'render_project_cpt_meta_box',
+    'project',
+    'normal',
+    'high'
+  );
+}
+add_action('add_meta_boxes', 'add_project_cpt_meta_box');
+
+
+/**
+ * Render the Project Details meta box.
+ */
+function render_project_cpt_meta_box($post)
+{
+  wp_nonce_field(
+    'save_project_cpt_settings',
+    'project_cpt_settings_nonce'
+  );
+
+  $year = get_post_meta($post->ID, 'completion_year', true) ?: '';
+  $summary = get_post_meta($post->ID, 'project_summary', true) ?: '';
+?>
+
+  <div class="project-meta-field">
+    <label for="completion_year">
+      <strong>Completion year</strong>
+    </label>
+
+    <input
+      type="number"
+      id="completion_year"
+      name="completion_year"
+      value="<?php echo esc_attr($year); ?>"
+      class="widefat">
+
+    <p class="description">
+      e.g., 2024
+    </p>
+  </div>
+
+  <div class="project-meta-field">
+    <label for="project_summary">
+      <strong>Project Summary</strong>
+    </label>
+
+    <textarea
+      id="project_summary"
+      name="project_summary"
+      rows="6"
+      class="widefat"><?php echo esc_textarea(trim($summary)); ?></textarea>
+
+    <p class="description">
+      A brief summary of the project.
+    </p>
+  </div>
+
+<?php
+}
+
+
+/**
+ * Save Project Details meta box data.
+ */
+function save_project_cpt_meta($post_id)
+{
+
+  // Verify nonce.
+  if (
+    !isset($_POST['project_cpt_settings_nonce']) ||
+    !wp_verify_nonce(
+      wp_unslash($_POST['project_cpt_settings_nonce']),
+      'save_project_cpt_settings'
+    )
+  ) {
+    return;
+  }
+
+  // Ignore autosaves and revisions.
+  if (
+    wp_is_post_autosave($post_id) ||
+    wp_is_post_revision($post_id)
+  ) {
+    return;
+  }
+
+  // Make sure this is a Project.
+  if (get_post_type($post_id) !== 'project') {
+    return;
+  }
+
+  // Make sure the current user can edit this post.
+  if (!current_user_can('edit_post', $post_id)) {
+    return;
+  }
+
+  // Save completion year.
+  if (isset($_POST['completion_year'])) {
+    update_post_meta(
+      $post_id,
+      'completion_year',
+      absint(
+        wp_unslash($_POST['completion_year'])
+      )
+    );
+  }
+
+  //save project summary
+  if (isset($_POST['project_summary'])) {
+    update_post_meta(
+      $post_id,
+      'project_summary',
+      sanitize_text_field(
+        wp_unslash($_POST['project_summary'])
+      )
+    );
+  }
+}
+add_action('save_post', 'save_project_cpt_meta');

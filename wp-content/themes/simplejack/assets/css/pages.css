@@ -105,7 +105,7 @@ Page and Page Partials Styling
   color: var(--ink-soft);
 }
 
-.recent-work__grid {
+.recent-work__item {
   display: grid;
   grid-template-columns: 4.5rem 1fr auto;
   gap: 1.5rem;
@@ -122,16 +122,23 @@ Page and Page Partials Styling
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  min-width: 0;
 }
 
 .recent-work__name {
   font-size: var(--text-lg);
   font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .recent-work__description {
   font-size: var(--text-sm);
   color: var(--ink-soft);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .recent-work__tags {
@@ -142,4 +149,15 @@ Page and Page Partials Styling
 a.work-hover:hover {
   color: var(--signal);
   border-bottom: 1px solid var(--signal);
+  cursor: pointer;
+}
+
+/*
+* Project Page Styling
+*/
+
+.project__title {
+  font-size: var(--text-3xl);
+  line-height: 1.1;
+  font-weight: 600;
 }
