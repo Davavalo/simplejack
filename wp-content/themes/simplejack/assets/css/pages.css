@@ -85,7 +85,7 @@ Page and Page Partials Styling
 
 /* Recent Work Section Styling */
 
-.recent-work__header {
+.work__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -94,38 +94,37 @@ Page and Page Partials Styling
   border-bottom: 1px solid var(--line);
 }
 
-.recent-work__title {
+.work__title {
   font-size: var(--text-lg);
   color: var(--ink);
   font-weight: 500;
 }
 
-.recent-work__subtitle {
+.work__subtitle {
   font-size: var(--text-sm);
   color: var(--ink-soft);
 }
 
-.recent-work__item {
+.work__item {
   display: grid;
-  grid-template-columns: 4.5rem 1fr auto;
   gap: 1.5rem;
   border-bottom: 1px solid var(--line);
   padding-block: 1.25rem;
 }
 
-.recent-work__date {
+.work__date {
   font-size: var(--text-sm);
   color: var(--ink-soft);
 }
 
-.recent-work__content {
+.work__content {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   min-width: 0;
 }
 
-.recent-work__name {
+.work__name {
   font-size: var(--text-lg);
   font-weight: 600;
   text-overflow: ellipsis;
@@ -133,7 +132,7 @@ Page and Page Partials Styling
   overflow: hidden;
 }
 
-.recent-work__description {
+.work__description {
   font-size: var(--text-sm);
   color: var(--ink-soft);
   text-overflow: ellipsis;
@@ -141,7 +140,7 @@ Page and Page Partials Styling
   overflow: hidden;
 }
 
-.recent-work__tags {
+.work__tags {
   font-size: var(--text-xs);
   color: var(--ink-soft);
 }

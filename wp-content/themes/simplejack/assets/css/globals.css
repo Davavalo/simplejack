@@ -67,6 +67,7 @@ Global CSS Variables
 
 body {
   font-family: var(--font-primary);
+  background: var(--paper);
 }
 
 section {

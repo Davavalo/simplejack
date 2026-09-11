@@ -33,7 +33,7 @@ function register_project_cpt()
 
     'show_ui'            => true,
     'show_in_menu'       => true,
-    'show_in_nav_menus'  => false,
+    'show_in_nav_menus'  => true,
     'show_in_admin_bar'  => true,
     'show_in_rest'       => true,
 
@@ -134,7 +134,7 @@ function render_project_cpt_meta_box($post)
       class="widefat">
 
     <p class="description">
-      e.g., 2024
+      The year the project was completed.
     </p>
   </div>
 
@@ -204,7 +204,7 @@ function save_project_cpt_meta($post_id)
     );
   }
 
-  //save project summary
+  // Save project summary
   if (isset($_POST['project_summary'])) {
     update_post_meta(
       $post_id,

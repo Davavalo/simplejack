@@ -8,7 +8,7 @@
 </main><!-- #main -->
 
 
-<footer class="site-footer">
+<footer id="colophon" class="site-footer">
   <div class="container">
 
     <p class="copyright">

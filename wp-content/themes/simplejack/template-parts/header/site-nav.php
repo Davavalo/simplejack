@@ -22,5 +22,4 @@
     );
     ?>
   </nav>
-<?php
-endif;
+<?php endif; ?>

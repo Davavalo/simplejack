@@ -31,7 +31,6 @@ body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: var(--paper);
 }
 
 /* Main fills available viewport space */

@@ -1,23 +1,29 @@
 <?php
+get_header();
+?>
 
+<?php
 $project_query = new WP_Query(
   array(
     'post_type'       => 'project',
-    'posts_per_page'  => 3,
+    'posts_per_page'  => -1,
     'meta_key'        => 'completion_year',
     'orderby'         => 'meta_value_num',
     'order'           => 'DESC',
   )
 );
 
+$count_posts = wp_count_posts('project');
+$published_count = $count_posts->publish;
+
 ?>
 
 <section id="work">
   <div class="container">
     <header class="work__header">
-      <h2 class="work__title">Recent Work</h2>
+      <h2 class="work__title">All Work</h2>
       <p class="work__subtitle">
-        Here's what I've been working on lately.
+        (<?php echo esc_html($published_count); ?>)
       </p>
     </header>
 
@@ -98,3 +104,6 @@ $project_query = new WP_Query(
     </div>
   </div>
 </section>
+
+<?php
+get_footer();
