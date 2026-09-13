@@ -12,6 +12,8 @@ get_header();
 ?>
 <section id="project">
   <div class="container">
+    <a href="<?php echo esc_url(home_url('/work')); ?>" class="project__back-link">
+      &larr; All Work</a>
     <h1 class="project__title">
       <?php the_title(); ?>
     </h1>
