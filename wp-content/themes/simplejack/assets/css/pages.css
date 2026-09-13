@@ -14,6 +14,13 @@ Page and Page Partials Styling
   font-weight: 700;
 }
 
+.page_subtitle {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  color: var(--ink-soft);
+  margin-top: 0.5rem;
+}
+
 .page_body {
   font-size: var(--text-lg);
   line-height: var(--text-lg--line-height);
@@ -224,4 +231,113 @@ a.work-hover:hover {
   padding-block: 0.25rem;
   padding-inline: 0.75rem;
   font-weight: 500;
+}
+
+/*
+* Contact Page Styling
+*/
+
+.simplejack-form-container {
+  width: 100%;
+  margin-top: 2rem;
+  margin-inline: auto;
+}
+.simplejack-field-group {
+  margin-bottom: 1.5rem;
+}
+.simplejack-field-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--text-sm--line-height);
+}
+.simplejack-field-group input[type="text"],
+.simplejack-field-group input[type="email"],
+.simplejack-field-group textarea {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 0.875rem;
+  color: var(--ink);
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  outline: none;
+  transition:
+    border-color var(--transition-duration) var(--transition-ease),
+    box-shadow var(--transition-duration) var(--transition-ease),
+    background-color var(--transition-duration) var(--transition-ease);
+}
+.simplejack-field-group textarea {
+  min-height: 10rem;
+  resize: vertical;
+}
+.simplejack-field-group input::placeholder,
+.simplejack-field-group textarea::placeholder {
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+.simplejack-field-group input:hover,
+.simplejack-field-group textarea:hover {
+  border-color: var(--ink-soft);
+}
+.simplejack-field-group input:focus,
+.simplejack-field-group textarea:focus {
+  border-color: var(--signal);
+  box-shadow: 0 0 0 1px var(--signal);
+}
+.simplejack-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem;
+  color: var(--paper);
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.5;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    color var(--transition-duration) var(--transition-ease),
+    background-color var(--transition-duration) var(--transition-ease),
+    border-color var(--transition-duration) var(--transition-ease);
+}
+.simplejack-submit-btn:hover {
+  color: var(--paper);
+  background: var(--signal);
+  border-color: var(--signal);
+}
+.simplejack-submit-btn:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+.simplejack-hidden-field {
+  display: none !important;
+  visibility: hidden !important;
+}
+.simplejack-success-msg,
+.simplejack-error-msg {
+  margin-bottom: 1.5rem;
+  padding: 0.875rem 1rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.simplejack-success-msg {
+  color: var(--ink);
+  border-left: 3px solid var(--signal);
+  margin-block: 1.5rem;
+}
+.simplejack-error-msg {
+  color: var(--ink);
+  border-left: 3px solid red;
+  margin-block: 1.5rem;
 }

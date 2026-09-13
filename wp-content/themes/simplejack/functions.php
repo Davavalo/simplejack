@@ -1,5 +1,10 @@
 <?php
 
+// Exit if accessed directly to prevent malicious execution
+if (!defined('ABSPATH')) {
+  exit;
+}
+
 function simplejack_scripts()
 {
   // The standard stylesheet.
@@ -136,3 +141,6 @@ require_once get_template_directory() . '/inc/project-post-type.php';
 
 // Meta boxes
 require_once get_template_directory() . '/inc/meta-boxes.php';
+
+// Contact form
+require_once get_template_directory() . '/template-parts/contact/contact-form.php';
