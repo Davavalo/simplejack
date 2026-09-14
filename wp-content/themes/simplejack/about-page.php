@@ -7,14 +7,13 @@
 
 // Define an array of skills to display on the About page
 $skills = [
-  'Art Direction',
   'Visual Storytelling',
   'Typography',
   'Brand Systems',
   'Presentation Design',
   'Data Visualization',
   'Print Production',
-  'Large-Format Graphics',
+  'Environmental Design',
   'Motion and Animation',
   'InDesign',
   'Illustrator',
@@ -36,7 +35,7 @@ $skills = [
       Art Director &amp; Designer
     </h1>
     <p class="page_body">
-      I take every idea and figure out how it can work across an entire event or campaign, making sure everything is cohesive and impactful. My work builds around the idea, keeping everything intentional from start to finish.
+      I take every idea and figure out how it can work across an entire event or campaign, making sure everything is cohesive and impactful. My work builds around the idea, keeping everything intentional every step of the way.
     </p>
     <div class="skills">
       <p class="skills__title">Relevant Skills</p>
@@ -49,6 +48,7 @@ $skills = [
       </ul>
     </div>
     <a href="/contact" class="button button--primary">Get in Touch</a>
+    <a href="<?php echo get_template_directory_uri() . '/assets/documents/Victor-Davalos-Resume.pdf'; ?>" class="button button--secondary">View Resume</a>
   </div>
 
   <?php get_footer(); ?>

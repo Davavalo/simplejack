@@ -62,7 +62,6 @@ Page and Page Partials Styling
   line-height: var(--text-lg--line-height);
   color: var(--ink-soft);
   margin-top: 1.25rem;
-  max-width: 32rem;
 }
 
 .hero__cta {
@@ -134,7 +133,6 @@ Page and Page Partials Styling
 .work__item {
   display: grid;
   gap: 1.5rem;
-  border-bottom: 1px solid var(--line);
   padding-block: 1.25rem;
 }
 
@@ -152,10 +150,16 @@ Page and Page Partials Styling
 
 .work__name {
   font-size: var(--text-lg);
+  color: var(--ink);
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  transition: color var(--transition-duration) var(--transition-ease);
+}
+
+.work-hover:hover .work__name {
+  color: var(--signal);
 }
 
 .work__description {
@@ -171,10 +175,17 @@ Page and Page Partials Styling
   color: var(--ink-soft);
 }
 
+a.work-hover {
+  border-bottom: 1px solid var(--line);
+
+  transition:
+    color var(--transition-duration) var(--transition-ease),
+    border-color var(--transition-duration) var(--transition-ease);
+}
+
 a.work-hover:hover {
   color: var(--signal);
-  border-bottom: 1px solid var(--signal);
-  cursor: pointer;
+  border-bottom-color: var(--signal);
 }
 
 /*
@@ -204,8 +215,7 @@ a.work-hover:hover {
 */
 
 .skills {
-  margin-top: 2.5rem;
-  margin-bottom: 1.5rem;
+  margin-block: 2.5rem;
 }
 
 .skills__title {

@@ -11,7 +11,7 @@ get_header();
         the_content();
       endwhile;
     else :
-      _e('Sorry, no posts matched your criteria.', 'textdomain');
+      _e('Sorry, no posts exist.', 'simplejack');
     endif;
     ?>
   </div>
