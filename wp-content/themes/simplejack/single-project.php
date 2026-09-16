@@ -3,6 +3,7 @@
 $current_post = get_post();
 // Fetch meta values from that specific page ID
 $completion_year = get_post_meta($current_post->ID, 'completion_year', true);
+$project_summary = get_post_meta($current_post->ID, 'project_summary', true);
 
 ?>
 
@@ -17,9 +18,8 @@ get_header();
     <h1 class="project__title">
       <?php the_title(); ?>
     </h1>
-
-    <p class="project__completion-year">
-      Completed in <?php echo esc_html($completion_year); ?>
+    <p>
+      <?php echo esc_html($project_summary); ?>
     </p>
   </div>
 </section>
