@@ -132,15 +132,5 @@ function add_menu_link_class($atts, $_item, $args)
 add_filter('nav_menu_link_attributes', 'add_menu_link_class', 10, 3);
 
 
-// Homepage Hero settings
-require_once get_template_directory() . '/inc/homepage-hero.php';
-
-
-// Project post type
-require_once get_template_directory() . '/inc/project-post-type.php';
-
-// Meta boxes
-require_once get_template_directory() . '/inc/meta-boxes.php';
-
 // Contact form
 require_once get_template_directory() . '/template-parts/contact/contact-form.php';
