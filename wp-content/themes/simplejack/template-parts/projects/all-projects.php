@@ -44,7 +44,7 @@ $project_query = new WP_Query([
         <?php if (!is_wp_error($project_tags) && !empty($project_tags)) :
 
           shuffle($project_tags);
-          $random_tags = array_slice($project_tags, 0, 2);
+          $random_tags = array_slice($project_tags, 0, 4);
 
         ?>
 

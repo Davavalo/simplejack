@@ -62,7 +62,7 @@ if (! function_exists('simplejack_setup')) {
 
     // Add support for post thumbnails on posts and pages.
     add_theme_support('post-thumbnails');
-    set_post_thumbnail_size(1920, 9999);
+    set_post_thumbnail_size();
 
     // Register the default menu locations.
     register_nav_menus(
