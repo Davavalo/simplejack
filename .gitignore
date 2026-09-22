@@ -27,4 +27,4 @@ node_modules/
 vendor/
 
 # ALLOWLIST: Un-ignore ONLY your custom theme or custom plugin
-!wp-content/themes/simplejack/
+!/simplejack/
