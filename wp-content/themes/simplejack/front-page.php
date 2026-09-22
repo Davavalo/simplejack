@@ -1,11 +1,20 @@
-<?php get_header(); ?>
+<?php
 
-    <?php if (have_posts()) : ?>
-        <?php while (have_posts()) : the_post(); ?>
+get_header();
 
-            <?php get_template_part('template-parts/home/hero'); ?>
-            <?php get_template_part('template-parts/home/recent-work'); ?>
+if (have_posts()) :
+    while (have_posts()) : the_post();
+        get_template_part('template-parts/home/hero');
+        get_template_part('template-parts/home/recent-work');
+    endwhile;
+else :
+?>
+    <section id="error">
+        <div class="container">
+            <p style="text-align: center;"><?php _e('No homepage exists. Open the customize menu and change the homepage settings to get started.', 'simplejack'); ?></p>
+        </div>
+    </section>
+<?php
+endif;
 
-        <?php endwhile; ?>
-    <?php endif; ?>
-<?php get_footer(); ?>
+get_footer();

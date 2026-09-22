@@ -27,9 +27,9 @@
           <div class="skills">
             <p class="skills__title">Relevant Skills</p>
             <ul class="skills__list">
-              <?php foreach ($relevant_skills as $skill) : ?>
+              <?php foreach ($relevant_skills as $skills) : ?>
                 <li class="skills__item">
-                  <?php echo esc_html($skill['skill']); ?>
+                  <?php echo esc_html($skills['skill']); ?>
                 </li>
               <?php endforeach; ?>
             </ul>
