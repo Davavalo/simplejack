@@ -1,30 +1,5 @@
-# Ignore everything in the root
-/*
-!.gitignore
-!wp-content/
-
-# Ignore everything in wp-content
-wp-content/*
-!wp-content/plugins/
-!wp-content/themes/
-
-# Ignore all themes and plugins by default
-wp-content/plugins/*
-wp-content/themes/*
-
-# Ignore Environment & Configuration
-wp-config.php
-.env
-.htaccess
-*.sql
-*.sqlite
-
-# Ignore Logs, System, and Build Tooling Files
-*.log
+# Local development files
 .DS_Store
 Thumbs.db
+.vscode/
 node_modules/
-vendor/
-
-# ALLOWLIST: Un-ignore ONLY your custom theme or custom plugin
-!/simplejack/
