@@ -110,6 +110,10 @@ if (! function_exists('simplejack_setup')) {
     // Remove feed icon link from legacy RSS widget.
     add_filter('rss_widget_feed_link', '__return_empty_string');
   }
+
+  // // Add starter content to the theme
+  // require get_template_directory() . '/inc/starter-content.php';
+  // add_theme_support('starter-content', simple_jack_get_starter_content());
 }
 add_action('after_setup_theme', 'simplejack_setup');
 
