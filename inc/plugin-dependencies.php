@@ -1,58 +1,99 @@
 <?php
 
 /**
- * Install and activate Secure Custom Fields.
+ * Install and activate required plugins.
  *
  * @since Simple Jack 1.0
  */
-function simple_jack_install_scf()
+
+function simple_jack_install_plugins()
 {
 
-  if (! current_user_can('activate_plugins')) {
-    return;
+  if (! current_user_can('install_plugins')) {
+    return false;
   }
 
-  $plugin_file = 'secure-custom-fields/secure-custom-fields.php';
+  $plugins = array(
+    array(
+      'slug' => 'secure-custom-fields',
+      'file' => 'secure-custom-fields/secure-custom-fields.php',
+    ),
 
-  // SCF is already active.
-  if (is_plugin_active($plugin_file)) {
-    return;
-  }
+    array(
+      'slug' => 'svg-support',
+      'file' => 'svg-support/svg-support.php',
+    ),
+
+    array(
+      'slug' => 'classic-editor',
+      'file' => 'classic-editor/classic-editor.php',
+    ),
+
+    array(
+      'slug' => 'disable-comments',
+      'file' => 'disable-comments/disable-comments.php',
+    ),
+
+    // Add additional plugins here.
+    // array(
+    // 	'slug' => 'plugin-slug',
+    // 	'file' => 'plugin-slug/plugin-file.php',
+    // ),
+  );
 
   // Load WordPress plugin APIs.
   require_once ABSPATH . 'wp-admin/includes/plugin.php';
   require_once ABSPATH . 'wp-admin/includes/file.php';
   require_once ABSPATH . 'wp-admin/includes/misc.php';
+  require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
   require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
-  // Install SCF if it does not exist.
-  if (! file_exists(WP_PLUGIN_DIR . '/' . $plugin_file)) {
+  $all_successful = true;
 
-    $api = plugins_api(
-      'plugin_information',
-      array(
-        'slug'   => 'secure-custom-fields',
-        'fields' => array(
-          'download_link' => true,
-        ),
-      )
-    );
+  foreach ($plugins as $plugin) {
 
-    if (is_wp_error($api) || empty($api->download_link)) {
-      return;
+    // Plugin is already active.
+    if (is_plugin_active($plugin['file'])) {
+      continue;
     }
 
-    $upgrader = new Plugin_Upgrader(
-      new Automatic_Upgrader_Skin()
-    );
+    // Install plugin if it does not exist.
+    if (! file_exists(WP_PLUGIN_DIR . '/' . $plugin['file'])) {
 
-    $result = $upgrader->install($api->download_link);
+      $api = plugins_api(
+        'plugin_information',
+        array(
+          'slug'   => $plugin['slug'],
+          'fields' => array(
+            'download_link' => true,
+          ),
+        )
+      );
 
-    if (is_wp_error($result) || ! $result) {
-      return;
+      if (is_wp_error($api) || empty($api->download_link)) {
+        $all_successful = false;
+        continue;
+      }
+
+      $upgrader = new Plugin_Upgrader(
+        new Automatic_Upgrader_Skin()
+      );
+
+      $result = $upgrader->install($api->download_link);
+
+      if (is_wp_error($result) || ! $result) {
+        $all_successful = false;
+        continue;
+      }
+    }
+
+    // Activate plugin.
+    $result = activate_plugin($plugin['file']);
+
+    if (is_wp_error($result)) {
+      $all_successful = false;
     }
   }
 
-  // Activate SCF.
-  activate_plugin($plugin_file);
+  return $all_successful;
 }

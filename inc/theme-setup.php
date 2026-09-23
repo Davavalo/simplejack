@@ -8,20 +8,20 @@
 function simple_jack_initialize()
 {
 
-  /*
-     * Install and activate SCF.
+   /*
+     * Install and activate necessary plugins.
      */
-  simple_jack_install_scf();
+   simple_jack_install_plugins();
 
-  /*
+   /*
      * Create starter content.
      */
-  simple_jack_create_starter_content();
+   simple_jack_create_starter_content();
 
-  /*
+   /*
      * Flush rewrite rules.
      */
-  flush_rewrite_rules();
+   flush_rewrite_rules();
 }
 
 add_action('after_switch_theme', 'simple_jack_initialize');

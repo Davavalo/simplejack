@@ -27,11 +27,16 @@ if ($current_location) {
     <?php if (!empty($hero_values)) : ?>
 
       <ul class="hero__subtitle">
-
         <?php foreach ($hero_values as $value) : ?>
           <li><?php echo esc_html($value); ?></li>
         <?php endforeach; ?>
+      </ul>
 
+    <?php else: ?>
+
+      <ul class="hero__subtitle">
+        <li>Currently building at Studio Co</li>
+        <li>· open to new work, Q3 2026</li>
       </ul>
 
     <?php endif; ?>
@@ -42,7 +47,7 @@ if ($current_location) {
       </h2>
     <?php else: ?>
       <h2 class="hero__title">
-        This section is for a short hero title about yourself.
+        I design and build interfaces that hold up under real use.
       </h2>
     <?php endif; ?>
 
@@ -52,7 +57,7 @@ if ($current_location) {
       </p>
     <?php else: ?>
       <p class="hero__description">
-        This section is for a short description about yourself to support your title.
+        Product design & frontend engineering — based on the work below, not a list of buzzwords.
       </p>
     <?php endif; ?>
 
