@@ -22,10 +22,14 @@ Page and Page Partials Styling
 }
 
 .page_body {
-  font-size: var(--text-lg);
-  line-height: var(--text-lg--line-height);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
   color: var(--ink-soft);
   margin-block: 1.5rem;
+}
+
+.page_body p {
+  margin-block: 1.25rem;
 }
 
 /* Hero Section Styling */

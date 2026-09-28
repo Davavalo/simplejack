@@ -1,9 +1,9 @@
 {
-  "key": "field_sj_project_pages",
+  "key": "group_sj_projects",
   "title": "Projects",
   "fields": [
     {
-      "key": "field_6aab317d7768e",
+      "key": "field_sj_projects_completion_year",
       "label": "Completion Year",
       "name": "completion_year",
       "aria-label": "",
@@ -26,7 +26,7 @@
       "append": ""
     },
     {
-      "key": "field_6aab325840783",
+      "key": "field_sj_projects_summary",
       "label": "Project Summary",
       "name": "project_summary",
       "aria-label": "",
@@ -46,7 +46,7 @@
       "new_lines": ""
     },
     {
-      "key": "field_6aad643fa5994",
+      "key": "field_sj_projects_role",
       "label": "Role",
       "name": "project_role",
       "aria-label": "",
