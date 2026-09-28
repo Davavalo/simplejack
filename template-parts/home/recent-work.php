@@ -1,13 +1,21 @@
 <?php
+/**
+ * The recent work section for the homepage.
+ *
+ * @package sj
+ */
 
-$project_query = new WP_Query([
-  'post_type'      => 'project',
-  'posts_per_page' => 3,
-  'meta_key'       => 'completion_year',
-  'orderby'        => 'meta_value_num',
-  'order'          => 'DESC',
-  'no_found_rows'  => true,
-]);
+$project_query = new WP_Query(
+	array(
+		'post_type'      => 'project',
+		'posts_per_page' => 3,
+		// Required to sort by the numeric completion year stored in post meta.
+		'meta_key'       => 'completion_year', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Intentional sort by completion year.
+		'orderby'        => 'meta_value_num',
+		'order'          => 'DESC',
+		'no_found_rows'  => true,
+	)
+);
 
 ?>
 
@@ -15,79 +23,81 @@ $project_query = new WP_Query([
 
 
 <section id="work">
-  <div class="container">
-    <header class="work__header">
-      <h2 class="work__title">Recent Work</h2>
-      <p class="work__subtitle">
-        Here's what I've been working on lately.
-      </p>
-    </header>
-    <?php
-    if ($project_query->have_posts()) :
-      while ($project_query->have_posts()) : $project_query->the_post();
-        $completion_year = get_field('completion_year');
-        $project_summary = get_field('project_summary');
-        $project_tags    = get_the_terms(get_the_ID(), 'post_tag');
-    ?>
+	<div class="container">
+	<header class="work__header">
+		<h2 class="work__title">Recent Work</h2>
+		<p class="work__subtitle">
+		Here's what I've been working on lately.
+		</p>
+	</header>
+	<?php
+	if ( $project_query->have_posts() ) :
+		while ( $project_query->have_posts() ) :
+			$project_query->the_post();
+			$completion_year = get_field( 'completion_year' );
+			$project_summary = get_field( 'project_summary' );
+			$project_tags    = get_the_terms( get_the_ID(), 'post_tag' );
+			?>
 
-        <a
-          href="<?php echo esc_url(get_permalink()); ?>"
-          class="work__item work-hover">
+		<a
+			href="<?php echo esc_url( get_permalink() ); ?>"
+			class="work__item work-hover">
 
-          <?php if (!empty($completion_year)) : ?>
-            <span class="work__date">
-              <?php echo esc_html($completion_year); ?>
-            </span>
-          <?php endif; ?>
+			<?php if ( ! empty( $completion_year ) ) : ?>
+			<span class="work__date">
+				<?php echo esc_html( $completion_year ); ?>
+			</span>
+			<?php endif; ?>
 
-          <span class="work__content">
+			<span class="work__content">
 
-            <span class="work__name">
-              <?php the_title(); ?>
-            </span>
+			<span class="work__name">
+				<?php the_title(); ?>
+			</span>
 
-            <?php if (!empty($project_summary)) : ?>
-              <span class="work__description">
-                <?php echo esc_html($project_summary); ?>
-              </span>
-            <?php endif; ?>
+			<?php if ( ! empty( $project_summary ) ) : ?>
+				<span class="work__description">
+				<?php echo esc_html( $project_summary ); ?>
+				</span>
+			<?php endif; ?>
 
-          </span>
+			</span>
 
-          <?php if (!is_wp_error($project_tags) && !empty($project_tags)) :
+			<?php
+			if ( ! is_wp_error( $project_tags ) && ! empty( $project_tags ) ) :
 
-            shuffle($project_tags);
-            $random_tags = array_slice($project_tags, 0, 4);
+				shuffle( $project_tags );
+				$random_tags = array_slice( $project_tags, 0, 4 );
 
-          ?>
+				?>
 
-            <span class="work__tags">
-              <?php foreach ($random_tags as $index => $tag) : ?>
-                <?php if ($index > 0) : ?>
-                  <span
-                    class="work__separator"
-                    aria-hidden="true">•</span>
-                <?php endif; ?>
+			<span class="work__tags">
+				<?php foreach ( $random_tags as $index => $random_tag ) : ?>
+					<?php if ( $index > 0 ) : ?>
+					<span
+					class="work__separator"
+					aria-hidden="true">•</span>
+					<?php endif; ?>
 
-                <span class="work__tag">
-                  <?php echo esc_html($tag->name); ?>
-                </span>
-              <?php endforeach; ?>
-            </span>
+				<span class="work__tag">
+					<?php echo esc_html( $random_tag->name ); ?>
+				</span>
+				<?php endforeach; ?>
+			</span>
 
-          <?php endif; ?>
+			<?php endif; ?>
 
-        </a>
+		</a>
 
-    <?php
-      endwhile;
-    else :
-      _e('Sorry, no work found.', 'simplejack');
-    endif;
+			<?php
+		endwhile;
+	else :
+		esc_html_e( 'Sorry, no work found.', 'simplejack' );
+	endif;
 
-    wp_reset_postdata();
-    ?>
-  </div>
+	wp_reset_postdata();
+	?>
+	</div>
 </section>
 
 <?php get_footer(); ?>

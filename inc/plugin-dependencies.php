@@ -1,99 +1,99 @@
 <?php
+/**
+ * Install and activate required plugins.
+ *
+ * @package sj
+ * @since Simple Jack 1.0
+ */
 
 /**
  * Install and activate required plugins.
  *
- * @since Simple Jack 1.0
+ * @return bool True if all plugins were installed and activated successfully.
  */
+function simple_jack_install_plugins() {
 
-function simple_jack_install_plugins()
-{
+	if ( ! current_user_can( 'install_plugins' ) ) {
+		return false;
+	}
 
-  if (! current_user_can('install_plugins')) {
-    return false;
-  }
+	$plugins = array(
+		array(
+			'slug' => 'secure-custom-fields',
+			'file' => 'secure-custom-fields/secure-custom-fields.php',
+		),
+		array(
+			'slug' => 'svg-support',
+			'file' => 'svg-support/svg-support.php',
+		),
+		array(
+			'slug' => 'classic-editor',
+			'file' => 'classic-editor/classic-editor.php',
+		),
+		array(
+			'slug' => 'disable-comments',
+			'file' => 'disable-comments/disable-comments.php',
+		),
 
-  $plugins = array(
-    array(
-      'slug' => 'secure-custom-fields',
-      'file' => 'secure-custom-fields/secure-custom-fields.php',
-    ),
+		// Add additional plugins here.
+		// array(
+		// 'slug' => 'plugin-slug',
+		// 'file' => 'plugin-slug/plugin-file.php',
+		// ).
+	);
 
-    array(
-      'slug' => 'svg-support',
-      'file' => 'svg-support/svg-support.php',
-    ),
+	// Load WordPress plugin APIs.
+	include_once ABSPATH . 'wp-admin/includes/plugin.php';
+	include_once ABSPATH . 'wp-admin/includes/file.php';
+	include_once ABSPATH . 'wp-admin/includes/misc.php';
+	include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+	include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
-    array(
-      'slug' => 'classic-editor',
-      'file' => 'classic-editor/classic-editor.php',
-    ),
+	$all_successful = true;
 
-    array(
-      'slug' => 'disable-comments',
-      'file' => 'disable-comments/disable-comments.php',
-    ),
+	foreach ( $plugins as $plugin ) {
 
-    // Add additional plugins here.
-    // array(
-    // 	'slug' => 'plugin-slug',
-    // 	'file' => 'plugin-slug/plugin-file.php',
-    // ),
-  );
+		// Plugin is already active.
+		if ( is_plugin_active( $plugin['file'] ) ) {
+			continue;
+		}
 
-  // Load WordPress plugin APIs.
-  require_once ABSPATH . 'wp-admin/includes/plugin.php';
-  require_once ABSPATH . 'wp-admin/includes/file.php';
-  require_once ABSPATH . 'wp-admin/includes/misc.php';
-  require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-  require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		// Install plugin if it does not exist.
+		if ( ! file_exists( WP_PLUGIN_DIR . '/' . $plugin['file'] ) ) {
+			$api = plugins_api(
+				'plugin_information',
+				array(
+					'slug'   => $plugin['slug'],
+					'fields' => array(
+						'download_link' => true,
+					),
+				)
+			);
 
-  $all_successful = true;
+			if ( is_wp_error( $api ) || empty( $api->download_link ) ) {
+				$all_successful = false;
+				continue;
+			}
 
-  foreach ($plugins as $plugin) {
+			$upgrader = new Plugin_Upgrader(
+				new Automatic_Upgrader_Skin()
+			);
 
-    // Plugin is already active.
-    if (is_plugin_active($plugin['file'])) {
-      continue;
-    }
+			$result = $upgrader->install( $api->download_link );
 
-    // Install plugin if it does not exist.
-    if (! file_exists(WP_PLUGIN_DIR . '/' . $plugin['file'])) {
+			if ( is_wp_error( $result ) || ! $result ) {
+				$all_successful = false;
+				continue;
+			}
+		}
 
-      $api = plugins_api(
-        'plugin_information',
-        array(
-          'slug'   => $plugin['slug'],
-          'fields' => array(
-            'download_link' => true,
-          ),
-        )
-      );
+		// Activate plugin.
+		$result = activate_plugin( $plugin['file'] );
 
-      if (is_wp_error($api) || empty($api->download_link)) {
-        $all_successful = false;
-        continue;
-      }
+		if ( is_wp_error( $result ) ) {
+			$all_successful = false;
+		}
+	}
 
-      $upgrader = new Plugin_Upgrader(
-        new Automatic_Upgrader_Skin()
-      );
-
-      $result = $upgrader->install($api->download_link);
-
-      if (is_wp_error($result) || ! $result) {
-        $all_successful = false;
-        continue;
-      }
-    }
-
-    // Activate plugin.
-    $result = activate_plugin($plugin['file']);
-
-    if (is_wp_error($result)) {
-      $all_successful = false;
-    }
-  }
-
-  return $all_successful;
+	return $all_successful;
 }

@@ -1,27 +1,31 @@
 <?php
+/**
+ * Initialize Simple Jack when the theme is activated.
+ *
+ * @package sj
+ * @since Simple Jack 1.0
+ */
 
 /**
  * Initialize Simple Jack when the theme is activated.
  *
- * @since Simple Jack 1.0
+ * @return void
  */
-function simple_jack_initialize()
-{
+function simple_jack_initialize() {
+	/**
+	 * Install and activate necessary plugins.
+	 */
+	simple_jack_install_plugins();
 
-   /*
-     * Install and activate necessary plugins.
-     */
-   simple_jack_install_plugins();
+	/**
+	 * Create starter content.
+	 */
+	simple_jack_create_starter_content();
 
-   /*
-     * Create starter content.
-     */
-   simple_jack_create_starter_content();
-
-   /*
-     * Flush rewrite rules.
-     */
-   flush_rewrite_rules();
+	/**
+	 * Flush rewrite rules.
+	 */
+	flush_rewrite_rules();
 }
 
-add_action('after_switch_theme', 'simple_jack_initialize');
+add_action( 'after_switch_theme', 'simple_jack_initialize' );

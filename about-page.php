@@ -1,47 +1,80 @@
 <?php
-/* Template Name: About Page */
+/**
+ * Template Name: About Page
+ *
+ * @package sj
+ */
+
+// Fallback skills if ACF fields are empty.
+$relevant_skills = array(
+	'TypeScript',
+	'Astro',
+	'React',
+	'Figma',
+	'Tailwind CSS',
+	'Node.js',
+);
+
+
+// Checks if ACF fields exist. Uses fallback values if they don't.
+if ( function_exists( 'get_field' ) ) {
+	$acf_skills = get_field( 'relevant_skills' );
+
+	if ( ! empty( $acf_skills ) ) {
+		$relevant_skills = array_column( $acf_skills, 'skill' );
+	}
+}
+
+// Gets the header.
+get_header();
+
 ?>
 
+<?php if ( have_posts() ) : ?>
+	<?php
+	while ( have_posts() ) :
+		the_post();
+		?>
 
-<?php $relevant_skills = get_field('relevant_skills'); ?>
+	<section id="about">
+		<div class="container">
+		<p class="page_eyebrow">
+			<?php the_title(); ?>
+		</p>
 
-<?php get_header(); ?>
+		<h1 class="page_title">
+			Art Director &amp; Designer
+		</h1>
+		<p class="page_body">
+			I take every idea and figure out how it can work across an entire event or campaign, making sure everything is cohesive and impactful. My work builds around the idea, keeping everything intentional every step of the way.
+		</p>
 
-<?php if (have_posts()) : ?>
-  <?php while (have_posts()) : the_post(); ?>
+		<?php if ( ! empty( $relevant_skills ) ) : ?>
+			<div class="skills">
+			<p class="skills__title">Relevant Skills</p>
 
-    <section id="about">
-      <div class="container">
-        <p class="page_eyebrow">
-          <?php the_title(); ?>
-        </p>
+			<ul class="skills__list">
+				<?php foreach ( $relevant_skills as $skill ) : ?>
+					<?php if ( ! empty( $skill ) ) : ?>
+					<li class="skills__item">
+						<?php echo esc_html( $skill ); ?>
+					</li>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</ul>
 
-        <h1 class="page_title">
-          Art Director &amp; Designer
-        </h1>
-        <p class="page_body">
-          I take every idea and figure out how it can work across an entire event or campaign, making sure everything is cohesive and impactful. My work builds around the idea, keeping everything intentional every step of the way.
-        </p>
+			</div>
+		<?php endif; ?>
 
-        <?php if (!empty($relevant_skills)) : ?>
-          <div class="skills">
-            <p class="skills__title">Relevant Skills</p>
-            <ul class="skills__list">
-              <?php foreach ($relevant_skills as $skills) : ?>
-                <li class="skills__item">
-                  <?php echo esc_html($skills['skill']); ?>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          </div>
-        <?php endif; ?>
+		<a href="/contact" class="button button--primary">Get in Touch</a>
+		<a href="<?php echo esc_url( get_template_directory_uri() . '/assets/documents/Victor-Davalos-Resume.pdf' ); ?>"
+			class="button button--secondary">
+			View Resume
+		</a>
+		</div>
+	</section>
 
-        <a href="/contact" class="button button--primary">Get in Touch</a>
-        <a href="<?php echo get_template_directory_uri() . '/assets/documents/Victor-Davalos-Resume.pdf'; ?>" class="button button--secondary">View Resume</a>
-      </div>
-    </section>
-
-  <?php endwhile; ?>
+	<?php endwhile; ?>
 <?php endif; ?>
 
 <?php get_footer(); ?>

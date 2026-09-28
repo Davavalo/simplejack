@@ -1,317 +1,291 @@
 <?php
+/**
+ * Render and process the Simple Jack contact form.
+ *
+ * @package sj
+ */
 
 /**
  * Render the Simple Jack contact form.
+ *
+ * @return string Contact form HTML.
  */
-function simplejack_render_contact_form()
-{
+function simplejack_render_contact_form() {
+	ob_start();
 
-  ob_start();
+	$status = '';
 
-  if (isset($_GET['status'])) {
+	// Display-only query parameter; it does not trigger a state change.
+	if ( isset( $_GET['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$status = sanitize_key( wp_unslash( $_GET['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display-only status; no state change.
+	}
 
-    if ('success' === $_GET['status']) {
+	if ( 'success' === $status ) {
+		echo '<div class="simplejack-success-msg">
+			Thank you! Your message has been sent.
+		</div>';
+	} elseif ( 'error' === $status ) {
+		echo '<div class="simplejack-error-msg">
+			Something went wrong. Please check your inputs and try again.
+		</div>';
+	}
+	?>
 
-      echo '<div class="simplejack-success-msg">
-                Thank you! Your message has been sent.
-            </div>';
-    } elseif ('error' === $_GET['status']) {
+	<form
+		action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
+		method="post"
+		class="simplejack-form-container"
+	>
+		<input
+			type="hidden"
+			name="action"
+			value="submit_simplejack_contact_form"
+		>
 
-      echo '<div class="simplejack-error-msg">
-                Something went wrong. Please check your inputs and try again.
-            </div>';
-    }
-  }
+		<?php
+		wp_nonce_field(
+			'simplejack_submit_form_action',
+			'simplejack_form_nonce'
+		);
+		?>
 
-?>
+		<!-- Honeypot -->
+		<div class="simplejack-hidden-field" aria-hidden="true">
+			<label for="simplejack_honeypot">Leave this field empty</label>
+			<input
+				type="text"
+				id="simplejack_honeypot"
+				name="simplejack_honeypot"
+				value=""
+				tabindex="-1"
+				autocomplete="off"
+			>
+		</div>
 
-  <form
-    action="<?php echo esc_url(admin_url('admin-post.php')); ?>"
-    method="post"
-    class="simplejack-form-container">
+		<div class="simplejack-field-group">
+			<label for="simplejack_name">
+				Your Name
+			</label>
+			<input
+				type="text"
+				id="simplejack_name"
+				name="simplejack_name"
+				maxlength="100"
+				autocomplete="name"
+				required
+			>
+		</div>
 
-    <input
-      type="hidden"
-      name="action"
-      value="submit_simplejack_contact_form">
+		<div class="simplejack-field-group">
+			<label for="simplejack_email">
+				Your Email
+			</label>
+			<input
+				type="email"
+				id="simplejack_email"
+				name="simplejack_email"
+				maxlength="254"
+				autocomplete="email"
+				required
+			>
+		</div>
 
-    <?php
-    wp_nonce_field(
-      'simplejack_submit_form_action',
-      'simplejack_form_nonce'
-    );
-    ?>
+		<div class="simplejack-field-group">
+			<label for="simplejack_message">
+				Your Message
+			</label>
+			<textarea
+				id="simplejack_message"
+				name="simplejack_message"
+				rows="6"
+				maxlength="5000"
+				required
+			></textarea>
+		</div>
 
-    <!-- Honeypot -->
-    <div class="simplejack-hidden-field" aria-hidden="true">
-      <label for="simplejack_honeypot">Leave this field empty</label>
+		<button
+			type="submit"
+			name="simplejack_submit"
+			class="simplejack-submit-btn"
+		>
+			Send Message
+		</button>
+	</form>
 
-      <input
-        type="text"
-        id="simplejack_honeypot"
-        name="simplejack_honeypot"
-        value=""
-        tabindex="-1"
-        autocomplete="off">
-    </div>
-
-    <div class="simplejack-field-group">
-
-      <label for="simplejack_name">
-        Your Name
-      </label>
-
-      <input
-        type="text"
-        id="simplejack_name"
-        name="simplejack_name"
-        maxlength="100"
-        autocomplete="name"
-        required>
-
-    </div>
-
-    <div class="simplejack-field-group">
-
-      <label for="simplejack_email">
-        Your Email
-      </label>
-
-      <input
-        type="email"
-        id="simplejack_email"
-        name="simplejack_email"
-        maxlength="254"
-        autocomplete="email"
-        required>
-
-    </div>
-
-    <div class="simplejack-field-group">
-
-      <label for="simplejack_message">
-        Your Message
-      </label>
-
-      <textarea
-        id="simplejack_message"
-        name="simplejack_message"
-        rows="6"
-        maxlength="5000"
-        required></textarea>
-
-    </div>
-
-    <button
-      type="submit"
-      name="simplejack_submit"
-      class="simplejack-submit-btn">
-      Send Message
-    </button>
-
-  </form>
-
-<?php
-
-  return ob_get_clean();
+	<?php
+	return ob_get_clean();
 }
 
 add_shortcode(
-  'simplejack_contact_form',
-  'simplejack_render_contact_form'
+	'simplejack_contact_form',
+	'simplejack_render_contact_form'
 );
-
 
 /**
  * Handle the Simple Jack contact form submission.
+ *
+ * @return void
  */
-function simplejack_handle_form_submission()
-{
+function simplejack_handle_form_submission() {
+	/**
+	 * Determine where to send the user after submission.
+	 * Fall back to the homepage if no referrer is available.
+	 */
+	$redirect_url = wp_get_referer();
 
-  /*
-     * Determine where to send the user after submission.
-     * Fall back to the homepage if no referrer is available.
-     */
-  $redirect_url = wp_get_referer() ?: home_url('/');
+	if ( ! $redirect_url ) {
+		$redirect_url = home_url( '/' );
+	}
 
+	/**
+	 * Verify the WordPress nonce.
+	 */
+	check_admin_referer(
+		'simplejack_submit_form_action',
+		'simplejack_form_nonce'
+	);
 
-  /*
-     * 1. Verify the WordPress nonce.
-     */
-  if (
-    ! isset($_POST['simplejack_form_nonce']) ||
-    ! wp_verify_nonce(
-      sanitize_text_field(
-        wp_unslash($_POST['simplejack_form_nonce'])
-      ),
-      'simplejack_submit_form_action'
-    )
-  ) {
+	/**
+	 * Check the honeypot.
+	 *
+	 * Real users never see this field.
+	 * If it contains anything, treat the submission as spam.
+	 */
+	if ( ! empty( $_POST['simplejack_honeypot'] ) ) {
+		wp_safe_redirect(
+			add_query_arg(
+				'status',
+				'success',
+				$redirect_url
+			)
+		);
+		exit;
+	}
 
-    wp_die(
-      'Security check failed.',
-      'Error',
-      array(
-        'response' => 403,
-      )
-    );
-  }
+	/**
+	 * Get and sanitize submitted values.
+	 *
+	 * WordPress slashes incoming request data,
+	 * so wp_unslash() comes before sanitization.
+	 */
+	$name = '';
 
+	if ( isset( $_POST['simplejack_name'] ) ) {
+		$name = sanitize_text_field(
+			wp_unslash( $_POST['simplejack_name'] )
+		);
+	}
 
-  /*
-     * 2. Check the honeypot.
-     *
-     * Real users never see this field.
-     * If it contains anything, treat the submission as spam.
-     */
-  if (
-    ! empty($_POST['simplejack_honeypot'])
-  ) {
+	$email = '';
 
-    wp_safe_redirect(
-      add_query_arg(
-        'status',
-        'success',
-        $redirect_url
-      )
-    );
+	if ( isset( $_POST['simplejack_email'] ) ) {
+		$email = sanitize_email(
+			wp_unslash( $_POST['simplejack_email'] )
+		);
+	}
 
-    exit;
-  }
+	$message = '';
 
+	if ( isset( $_POST['simplejack_message'] ) ) {
+		$message = sanitize_textarea_field(
+			wp_unslash( $_POST['simplejack_message'] )
+		);
+	}
 
-  /*
-     * 3. Get and sanitize submitted values.
-     *
-     * WordPress slashes incoming request data,
-     * so wp_unslash() comes before sanitization.
-     */
-  $name = isset($_POST['simplejack_name'])
-    ? sanitize_text_field(
-      wp_unslash($_POST['simplejack_name'])
-    )
-    : '';
+	/**
+	 * Validate required fields.
+	 */
+	if (
+		'' === $name
+		|| '' === $email
+		|| '' === $message
+		|| ! is_email( $email )
+	) {
+		wp_safe_redirect(
+			add_query_arg(
+				'status',
+				'error',
+				$redirect_url
+			)
+		);
+		exit;
+	}
 
-  $email = isset($_POST['simplejack_email'])
-    ? sanitize_email(
-      wp_unslash($_POST['simplejack_email'])
-    )
-    : '';
+	/**
+	 * Validate reasonable length limits.
+	 */
+	if (
+		strlen( $name ) > 100
+		|| strlen( $email ) > 254
+		|| strlen( $message ) > 5000
+	) {
+		wp_safe_redirect(
+			add_query_arg(
+				'status',
+				'error',
+				$redirect_url
+			)
+		);
+		exit;
+	}
 
-  $message = isset($_POST['simplejack_message'])
-    ? sanitize_textarea_field(
-      wp_unslash($_POST['simplejack_message'])
-    )
-    : '';
+	/**
+	 * Build the email.
+	 */
+	$to      = get_option( 'admin_email' );
+	$subject = 'New Contact Form Submission';
+	$body    = "You received a new message from your website.\n\n";
+	$body   .= 'Name: ' . $name . "\n";
+	$body   .= 'Email: ' . $email . "\n\n";
+	$body   .= "Message:\n";
+	$body   .= $message;
 
+	/**
+	 * Set the email headers.
+	 *
+	 * Reply-To allows you to hit "Reply" in your
+	 * email client and respond directly to the visitor.
+	 */
+	$headers = array(
+		'Content-Type: text/plain; charset=UTF-8',
+		'Reply-To: ' . $name . ' <' . $email . '>',
+	);
 
-  /*
-     * 4. Validate required fields.
-     */
-  if (
-    '' === $name ||
-    '' === $email ||
-    '' === $message ||
-    ! is_email($email)
-  ) {
+	/**
+	 * Send the email through WordPress.
+	 *
+	 * Post SMTP will handle the actual delivery
+	 * if it is installed and configured.
+	 */
+	$mail_sent = wp_mail(
+		$to,
+		$subject,
+		$body,
+		$headers
+	);
 
-    wp_safe_redirect(
-      add_query_arg(
-        'status',
-        'error',
-        $redirect_url
-      )
-    );
-
-    exit;
-  }
-
-
-  /*
-     * 5. Validate reasonable length limits.
-     */
-  if (
-    strlen($name) > 100 ||
-    strlen($email) > 254 ||
-    strlen($message) > 5000
-  ) {
-
-    wp_safe_redirect(
-      add_query_arg(
-        'status',
-        'error',
-        $redirect_url
-      )
-    );
-
-    exit;
-  }
-
-
-  /*
-     * 6. Build the email.
-     */
-  $to = get_option('admin_email');
-
-  $subject = 'New Contact Form Submission';
-
-  $body = "You received a new message from your website.\n\n";
-  $body .= "Name: " . $name . "\n";
-  $body .= "Email: " . $email . "\n\n";
-  $body .= "Message:\n";
-  $body .= $message;
-
-
-  /*
-     * 7. Set the email headers.
-     *
-     * Reply-To allows you to hit "Reply" in your
-     * email client and respond directly to the visitor.
-     */
-  $headers = array(
-    'Content-Type: text/plain; charset=UTF-8',
-    'Reply-To: ' . $name . ' <' . $email . '>',
-  );
-
-
-  /*
-     * 8. Send the email through WordPress.
-     *
-     * Post SMTP will handle the actual delivery
-     * if it is installed and configured.
-     */
-  $mail_sent = wp_mail(
-    $to,
-    $subject,
-    $body,
-    $headers
-  );
-
-
-  /*
-     * 9. Redirect back with the result.
-     */
-  wp_safe_redirect(
-    add_query_arg(
-      'status',
-      $mail_sent ? 'success' : 'error',
-      $redirect_url
-    )
-  );
-
-  exit;
+	/**
+	 * Redirect back with the result.
+	 */
+	wp_safe_redirect(
+		add_query_arg(
+			'status',
+			$mail_sent ? 'success' : 'error',
+			$redirect_url
+		)
+	);
+	exit;
 }
 
-
-/*
+/**
  * Handle submissions from logged-in and logged-out users.
  */
 add_action(
-  'admin_post_submit_simplejack_contact_form',
-  'simplejack_handle_form_submission'
+	'admin_post_submit_simplejack_contact_form',
+	'simplejack_handle_form_submission'
 );
 
 add_action(
-  'admin_post_nopriv_submit_simplejack_contact_form',
-  'simplejack_handle_form_submission'
+	'admin_post_nopriv_submit_simplejack_contact_form',
+	'simplejack_handle_form_submission'
 );
