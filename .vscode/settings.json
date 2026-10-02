@@ -3,7 +3,10 @@
   "phpsab.fixerEnable": true,
 
   "phpsab.standard": "WordPress",
-  "phpsab.autoRulesetSearch": true,
+  "phpsab.autoRulesetSearch": false,
+
+  "phpsab.executablePathCBF": "vendor/bin/phpcbf",
+  "phpsab.executablePathCS": "vendor/bin/phpcs",
 
   "phpsab.snifferMode": "onSave",
   "phpsab.snifferShowSources": true,
@@ -13,5 +16,6 @@
 
   "editor.formatOnSave": true,
   "intelephense.format.enable": false,
+
   "intelephense.environment.includePaths": ["${workspaceFolder}/stubs"]
 }

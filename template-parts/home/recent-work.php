@@ -2,7 +2,7 @@
 /**
  * The recent work section for the homepage.
  *
- * @package sj
+ * @package simplejack
  */
 
 $project_query = new WP_Query(
